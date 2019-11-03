@@ -30,7 +30,7 @@ class Recommendations:
         isWindy = False
         isRaining = False
 
-        if self.startTemperature - self.endWindChill <= -10:
+        if self.startTemperature < 50 or self.startWindChill < 50:
             isCold = True
         if self.startPrecipitation > 0:
             isRaining = True
@@ -54,13 +54,12 @@ class Recommendations:
         isWindy = False
         isRaining = False
 
-        if self.startTemperature - self.endWindChill <= -10:
+        if self.endTemperature < 50 or self.endWindChill < 50:
             isCold = True
-        if self.startPrecipitation > 0:
+        if self.endPrecipitation > 0:
             isRaining = True
-        if self.startWindSpeed > 30:
+        if self.endWindSpeed > 30:
             isWindy = True
-
         self.recommendation += '\nWhen you arrive at you destination '
         if isCold:
             self.recommendation += 'It\'s going to be brisk! Bring a jacket if you didn\'t already! '
