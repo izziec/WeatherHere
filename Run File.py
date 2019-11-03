@@ -1,7 +1,6 @@
 from WeatherDataCollection import WeatherCollection
 from GoogleMapsDirections import GoogleMapsDirections
 
-
 def run(start, end):
 
     getDir = GoogleMapsDirections((start, end), 'driving')
@@ -9,10 +8,12 @@ def run(start, end):
     print('Start:', start, startCord, '\nDestination:', end, endCord)
 
     getWeatherStart = WeatherCollection((startCord['lat'], startCord['lng']))
-    print('Weather in', start, ':', getWeatherStart.get_weather())
+    startData = getWeatherStart.get_weather()
+    print('Temperature in', start, ':', str(startData[0]) + 'F')
 
     getWeatherEnd = WeatherCollection((endCord['lat'], endCord['lng']))
-    print('Weather in', end, ':', getWeatherEnd.get_weather())
+    endData = getWeatherEnd.get_weather()
+    print('Temperature in', end, ':', str(endData[0]) + 'F')
 
 
-run('Boston', 'Centreville')
+run('sanfrancisco', 'Centreville')
