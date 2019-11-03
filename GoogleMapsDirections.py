@@ -6,7 +6,7 @@ class GoogleMapsDirections:
 
     def __init__(self, locations, mode='driving'):
         self.origin, self.destination = locations[0], locations[1]
-        self.API = 'AIzaSyCQxEAzWbYsFxNkCceFjMB2Q2U_ptAbNIg'
+        self.API = 'Insert Key Here'
         self.mode = mode
 
     def getDirections(self):
