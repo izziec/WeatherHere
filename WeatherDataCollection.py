@@ -6,10 +6,20 @@ class WeatherCollection:
 
     def __init__(self, location):
         self.API = 'AIkWklh7Z3m26EMr6gssS4PHn5X4z1Oi'
-        self.location = 'Centreville'
+        self.lat, self.lon = location
+        self.city = self.get_location()
+
+
+    def get_location(self):
+        url = 'http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=%s' \
+              '&q=%s,%s' \
+              '&details=true' % (self.API, self.lat, self.lon)
+        with urllib.request.urlopen(url) as url:
+            data = json.loads(url.read().decode())
+        return data['Key']
 
     def get_weather(self):
-        url = 'http://dataservice.accuweather.com/currentconditions/v1/%s?apikey=%s&details=true' % (self.location, self.API)
+        url = 'http://dataservice.accuweather.com/currentconditions/v1/%s?apikey=%s&details=true' % (self.city, self.API)
         with urllib.request.urlopen(url) as url:
             data = json.loads(url.read().decode())
         return (data[0]['Temperature']['Imperial']['Value'],
