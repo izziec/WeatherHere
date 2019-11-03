@@ -1,0 +1,69 @@
+<html>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQxEAzWbYsFxNkCceFjMB2Q2U_ptAbNIg&callback=initMap"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="../script/weatherFromMap.js"></script>
+	<script>
+		// Make a polyLine Map
+		var polyLineMap;
+		document.addEventListener("DOMContentLoaded", function(event) { 
+		  	var map_element = document.getElementById('googleMap');
+			polyLineMap = WeatherFromMap.createPolyLineMap(map_element);		
+		});
+		var markerMap;
+		document.ready(function() {
+  		var map_element = document.getElementById('googleMap');
+  		markerMap = WeatherFromMap.createMarkerMap(map_element);
+		});
+	</script>
+	<h2>Mark the ship route on the map, enter no. of days of thevoyage and press the button to load expected weather of the first 4 days of voyage</h2>
+	<br>
+	<div id = "googleMap" style="height:450px; width : 700px; float  :left"></div>
+	<button onclick = "getWeather()">Go!!</button>
+	<table id = "weatherTable" border = "1" style = "">
+	</table>
+	<div>Total Days of the Voyage <input type="text" name="days"  id = "days"></div>
+	<button onclick = "getRouteWeather()">Get Weather on Route</button>
+	<div>Note that loading the weather takes time.. Be patient :) </div>
+
+	<script type="text/javascript">
+		// Get weather on route 
+		function getRouteWeather(){
+			
+			var days = document.getElementById("days").value;
+			var polyline = polyLineMap['polyline'];
+			
+			$("#weatherTable").append('<tr><td>MaxTemp</td><td>MinTemp</td><td>WindSpedd</td><td>Rain</td></tr>')
+
+			// Iterate for each Day
+
+			for(var i = 0; i< days && i < 4; i++){
+
+				//Get weather on poly lines at equal intervals
+
+				var weather = polyline.GetForecastAtDistance((i * polyline.Distance())/days);
+				var maxTemp = weather['list'][i]['temp']['max'] - 273;
+				var minTemp = weather['list'][i]['temp']['min'] - 273;
+				var windSpeed = weather['list'][i]['speed'];
+				var ppt = weather['list'][i]['rain'];
+				
+				$("#weatherTable").append('<tr><td>'+maxTemp+'</td>'+
+					'<td>'+minTemp+'</td>'+
+					'<td>'+windSpeed+'</td>'+
+					'<td>'+ppt+'</td>'+
+					'</tr>') ;
+				
+			}
+
+		}
+		function getWeather(){
+  			//get a selected marker from the markerMap object
+  			var marker = markerMap['markers'][0];
+  			var weather = marker.GetCurrentWeatherAtMarker();
+  			//weather is a JSON object of current weather at the given point. To know more about it visit www.openweathermap.org
+  			alert(JSON.stringify(weather, null, 4));
+		}
+
+	</script>
+
+	
+</html>
